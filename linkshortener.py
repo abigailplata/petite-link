@@ -1,4 +1,7 @@
+### Link shortener using Bitly API and request python libraries
+###
 #reference: https://www.thepythoncode.com/article/make-url-shortener-in-python
+
 import requests
 
 #account credentials
