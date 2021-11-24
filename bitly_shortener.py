@@ -5,7 +5,7 @@ import requests
 
 #account information:
 username = "o_24br6eq2n7" 
-password = "_passw0rd!" ##replace password from original Bitly account
+password = "Opportunity23!" ##replace password from original Bitly account
 
 #get access token:
 auth_res = request.post("https://api-ssl.bitly.com/oauth/access_token", auth=(username, password))
