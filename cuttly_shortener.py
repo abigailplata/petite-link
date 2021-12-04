@@ -1,4 +1,5 @@
 import requests
+#cut.tly API documentation https://cutt.ly/api-documentation/cuttly-links-api
 
 # replace your API key
 api_key = "07f10e399fecb56b65f4c429f7f6b55d61d3c"
@@ -15,8 +16,7 @@ data = requests.get(api_url).json()["url"]
 
 if data["status"] == 7:
 	# OK, get short url
-	petite_url = data["petitelink"]
-	print("Petite URL:  ", url)
+	shortened_url = data["shortlink"]
+	print("Shortened URL:  ", shortened_url)
 else:
 	print("[!] Error Shortening URL:", data)
-
