@@ -7,13 +7,15 @@ import requests
 username = "o_24br6eq2n7" 
 password = "Opportunity23!" ##replace password from original Bitly account
 
+url = input("Input Long URL:  ")
+
 #get access token:
-auth_res = request.post("https://api-ssl.bitly.com/oauth/access_token", auth=(username, password))
+auth_res = requests.post("https://api-ssl.bitly.com/oauth/access_token", auth=(username, password))
 
 # used requests.post() method to make a POST request to /oauth/access_token 
 # endpoint and get our access token. We passed auth parameter to add our account credentials to the request headers.
 
-if auth_res.status_code == 200;
+if auth_res.status_code == 200:
 	#if response is good, get the access token
 	access_token = auth_res.content.decode()
 	print("[!] Got access token:", access_token)
