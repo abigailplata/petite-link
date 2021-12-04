@@ -27,7 +27,7 @@ else:
 headers = {"Authorization": f"Bearer {access_token}"}
 
 # get the group UID associated with our account before shortening URL
-groups_res = requests.get("https://api-ssl.bitly.com/v4/groups", headers=headers)
+groups_res = requests.get("https://api-ssl.bitly.com/v4/groups", headers=headers) #downloaded API from Bitly
 if groups_res.status_code == 200:
     # if response is OK, get the GUID
     groups_data = groups_res.json()['groups'][0]
