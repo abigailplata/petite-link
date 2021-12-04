@@ -3,7 +3,6 @@
 
 import requests
 
-#account information:
 username = "o_24br6eq2n7" 
 password = "Opportunity23!" ##replace password from original Bitly account
 
