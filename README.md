@@ -1,3 +1,4 @@
-#Link shortener
+# Link shortener
 ## Using Bitly and Cut.tly API along with Python requests libraries
-### Will be integrating it into a website with PythonAnywhere as the host. 
+### Goals:
+Will be integrating it into a website. Using Flask as a server and PythonAnywhere as the host. 
