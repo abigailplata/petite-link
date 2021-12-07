@@ -1,51 +1,39 @@
-from flask import Flask, render_template
+import sqlite3
 import requests
+from hashids import Hashids
+from flask import Flask, render_template, request, flash, redirect,url_for
 app = Flask(__name__)
+app.config['SECRET KEY'] = 'O7312K1'
 
-@app.route('/')
+hashids = Hashids(min_length=4, salt=app.config['SECRET_KEY'])
+
+def get_db_connection():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+@app.route('/', methods=('GET','POST'))
 def index():
+    conn = get_db_connection()
+
+    if request.method == 'POST':
+        url = request.form['url']
+
+        if not url:
+            flash('The URL is required.')
+            return redirect(url_for('index'))
+        url_data = conn.execute('INSERT TO urls (oirignal_url) VALUES (?)',(url,))
+        conn.commit()
+        conn.close()
+
+        url_id = url_data.lastrowid
+        hashid = hashids.encode(url_id)
+        short_url = request.host_url + hashid
+
+        return render_template('index.html', short_url=short_url)
+
     return render_template('index.html')
 
-@app.route('/getshortlink')
-def getshortlink():
-    ### Link shortener using Bitly API and request python libraries
-    ### reference: https://www.thepythoncode.com/article/make-url-shortener-in-python
+#@app.route('/getshortlink')
+#def getshortlink():
 
-    username = "o_24br6eq2n7" 
-    password = "Opportunity23!" ##replace password from original Bitly account
-
-    url = input("Input Long URL:  ")
-
-    #get access token:
-    auth_res = requests.post("https://api-ssl.bitly.com/oauth/access_token", auth=(username, password))
-
-    # used requests.post() method to make a POST request to /oauth/access_token 
-    # endpoint and get our access token. We passed auth parameter to add our account credentials to the request headers.
-
-    if auth_res.status_code == 200:
-	    #if response is good, get the access token
-	    access_token = auth_res.content.decode()
-	    print("[!] Got access token:", access_token)
-    else: 
-	    print("[!] Cannot get access token, exiting...")
-	    exit()
-	
-    # construct the request headers with authorization
-    headers = {"Authorization": f"Bearer {access_token}"}
-
-    # get the group UID associated with our account before shortening URL
-    groups_res = requests.get("https://api-ssl.bitly.com/v4/groups", headers=headers) #downloaded API from Bitly
-    if groups_res.status_code == 200:
-     # if response is OK, get the GUID
-        groups_data = groups_res.json()['groups'][0]
-        guid = groups_data['guid']
-    else:
-        print("[!] Cannot get GUID, exiting...")
-        exit()
-
-    # make the POST request to get shortened URL for `url`
-    shorten_res = requests.post("https://api-ssl.bitly.com/v4/shorten", json={"group_guid": guid, "long_url": url}, headers=headers)
-    if shorten_res.status_code == 200:
-        # if response is OK, get the shortened URL
-        link = shorten_res.json().get("link")
-        print("Petite URL:", link)
