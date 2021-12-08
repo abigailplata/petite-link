@@ -1,9 +1,10 @@
 import sqlite3
-import requests
+
 from hashids import Hashids
-from flask import Flask, render_template, request, flash, redirect,url_for
+from flask import Flask, render_template, flash, redirect, url_for, request
+
 app = Flask(__name__)
-app.config['SECRET KEY'] = 'O7312K1'
+app.config['SECRET KEY'] = 'O731'
 
 hashids = Hashids(min_length=4, salt=app.config['SECRET_KEY'])
 
@@ -22,7 +23,7 @@ def index():
         if not url:
             flash('The URL is required.')
             return redirect(url_for('index'))
-        url_data = conn.execute('INSERT TO urls (oirignal_url) VALUES (?)',(url,))
+        url_data = conn.execute('INSERT TO urls (original_url) VALUES (?)',(url,))
         conn.commit()
         conn.close()
 
