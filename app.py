@@ -34,7 +34,3 @@ def index():
         return render_template('index.html', short_url=short_url)
 
     return render_template('index.html')
-
-#@app.route('/getshortlink')
-#def getshortlink():
-
